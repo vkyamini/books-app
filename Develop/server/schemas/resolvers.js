@@ -8,9 +8,9 @@ const resolvers = {
     }
   },
   Mutation: {
-    login: async (parent, { username, email, password }) => {
+    login: async (parent, { email, password }) => {
         const user = await User.findOne({
-            $or: [{ username: username }, { email: email }],
+            $or: [{ email: email }],
           });
           if (!user) {
             return { message: "Can't find this user" };
