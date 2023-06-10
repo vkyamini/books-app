@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
+import React from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { QUERY_USER } from "../utils/queries";
+import { REMOVE_BOOK } from "../utils/mutations";
 
 import { deleteBook } from "../utils/API";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
 
 const SavedBooks = () => {
+  const navigate = useNavigate();
+  const [removeBook] = useMutation(REMOVE_BOOK);
+
   const profile = Auth.loggedIn() ? Auth.getProfile() : null;
 
-  const { loading, data } = useQuery(QUERY_USER, {
+  const { loading, data, refetch } = useQuery(QUERY_USER, {
+    fetchPolicy: "no-cache",
     variables: {
       meId: profile.data._id,
     },
@@ -25,14 +31,19 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook(bookId, token);
+      const response = await removeBook({
+        variables: {
+          userId: profile.data._id,
+          bookId: bookId,
+        },
+      });
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error("something went wrong!");
       }
 
-      const updatedUser = await response.json();
       removeBookId(bookId);
+      refetch({ meId: profile.data._id });
     } catch (err) {
       console.error(err);
     }
