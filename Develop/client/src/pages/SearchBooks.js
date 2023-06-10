@@ -84,7 +84,6 @@ const SearchBooks = () => {
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
-            <Col xs={12} md={8}>
               <Form.Control
                 name="searchInput"
                 value={searchInput}
@@ -93,12 +92,9 @@ const SearchBooks = () => {
                 size="lg"
                 placeholder="Search for a book"
               />
-            </Col>
-            <Col xs={12} md={4}>
-              <Button type="submit" variant="success" size="lg">
+              <Button type="submit" variant="success" size="lg" style={{marginTop: `10px`}}>
                 Submit Search
               </Button>
-            </Col>
           </Form>
         </Container>
       </div>
