@@ -25,3 +25,28 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const SAVE_BOOK = gql`
+  mutation saveBook(
+    $userId: String!
+    $authors: [String]!
+    $description: String!
+    $title: String!
+    $bookId: String!
+    $image: String!
+    $link: String!
+  ) {
+    saveBook(
+      userId: $userId
+      authors: $authors
+      description: $description
+      title: $title
+      bookId: $bookId
+      image: $image
+      link: $link
+    ) {
+      _id
+      bookCount
+    }
+  }
+`;

@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Container, Col, Form, Button, Card, Row } from "react-bootstrap";
 
+import { useMutation } from "@apollo/client";
+import { SAVE_BOOK } from "../utils/mutations";
+
 import Auth from "../utils/auth";
-import { saveBook, searchGoogleBooks } from "../utils/API";
+import { searchGoogleBooks } from "../utils/API";
+
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 
 const SearchBooks = () => {
+  const [saveBook] = useMutation(SAVE_BOOK);
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
@@ -36,13 +41,15 @@ const SearchBooks = () => {
       }
 
       const { items } = await response.json();
+      console.log(items);
 
       const bookData = items.map((book) => ({
-        bookId: book.id,
+        bookId: book.id || "",
         authors: book.volumeInfo.authors || ["No author to display"],
-        title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
+        title: book.volumeInfo.title || "",
+        description: book.volumeInfo.description || "",
         image: book.volumeInfo.imageLinks?.thumbnail || "",
+        link: book.volumeInfo.infoLink || "",
       }));
 
       setSearchedBooks(bookData);
@@ -58,16 +65,21 @@ const SearchBooks = () => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
     // get token
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
+    const profile = Auth.loggedIn() ? Auth.getProfile() : null;
+    console.log(profile.data._id);
+    if (!profile) {
       return false;
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const response = await saveBook({
+        variables: {
+          userId: profile.data._id,
+          ...bookToSave,
+        },
+      });
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error("something went wrong!");
       }
 
@@ -84,17 +96,22 @@ const SearchBooks = () => {
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
-              <Form.Control
-                name="searchInput"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                type="text"
-                size="lg"
-                placeholder="Search for a book"
-              />
-              <Button type="submit" variant="success" size="lg" style={{marginTop: `10px`}}>
-                Submit Search
-              </Button>
+            <Form.Control
+              name="searchInput"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              type="text"
+              size="lg"
+              placeholder="Search for a book"
+            />
+            <Button
+              type="submit"
+              variant="success"
+              size="lg"
+              style={{ marginTop: `10px` }}
+            >
+              Submit Search
+            </Button>
           </Form>
         </Container>
       </div>
