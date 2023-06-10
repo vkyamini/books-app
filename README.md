@@ -4,7 +4,7 @@
 
 Your assignment this week is emblematic of the fact that most modern websites are driven by two things: data and user demands. This shouldn't come as a surprise, as the ability to personalize user data is the cornerstone of real-world web development today. And as user demands evolve, applications need to be more performant.
 
-This week, you’ll take starter code with a fully functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end. 
+This week, you’ll take starter code with a fully functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end.
 
 To complete the assignment, you’ll need to do the following:
 
@@ -16,7 +16,6 @@ To complete the assignment, you’ll need to do the following:
 
 4. Deploy your application to Heroku with a MongoDB database using MongoDB Atlas. Use the [Deploy with Heroku and MongoDB Atlas](https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-heroku-and-mongodb-atlas) walkthrough for instructions.
 
-
 ## User Story
 
 ```md
@@ -24,7 +23,6 @@ AS AN avid reader
 I WANT to search for new books to read
 SO THAT I can keep a list of books to purchase
 ```
-
 
 ## Acceptance Criteria
 
@@ -57,9 +55,8 @@ THEN I am presented with all of the books I have saved to my account, each featu
 WHEN I click on the Remove button on a book
 THEN that book is deleted from my saved books list
 WHEN I click on the Logout button
-THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button  
+THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button
 ```
-
 
 ## Mock-Up
 
@@ -77,7 +74,6 @@ A user can view their saved books on a separate page, as shown in the following 
 
 ![The Viewing Lernantino's Books page shows the books that the user Lernaninto has saved.](./Assets/21-mern-homework-demo-03.gif)
 
-
 ## Getting Started
 
 In order for this application to use a GraphQL API, you’ll need to refactor the API to use GraphQL on the back end and add some functionality to the front end. The following sections contain details about the files you’ll need to modify on the back end and the front end.
@@ -88,177 +84,171 @@ In order for this application to use a GraphQL API, you’ll need to refactor th
 
 You’ll need to complete the following tasks in each of these back-end files:
 
-* `auth.js`: Update the auth middleware function to work with the GraphQL API.
+- `auth.js`: Update the auth middleware function to work with the GraphQL API.
 
-* `server.js`: Implement the Apollo Server and apply it to the Express server as middleware.
+- `server.js`: Implement the Apollo Server and apply it to the Express server as middleware.
 
-* `Schemas` directory:
+- `Schemas` directory:
 
-	* `index.js`: Export your typeDefs and resolvers.
+  - `index.js`: Export your typeDefs and resolvers.
 
-	* `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
+  - `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
 
-		**Hint**: Use the functionality in the `user-controller.js` as a guide.
+    **Hint**: Use the functionality in the `user-controller.js` as a guide.
 
-	* `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
+  - `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
 
-		* `Query` type:
+    - `Query` type:
 
-			* `me`: Which returns a `User` type.
-		
-		* `Mutation` type:
+      - `me`: Which returns a `User` type.
 
-			* `login`: Accepts an email and password as parameters; returns an `Auth` type.
+    - `Mutation` type:
 
-			* `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
+      - `login`: Accepts an email and password as parameters; returns an `Auth` type.
 
-			* `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
+      - `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
 
-			* `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
-			
-		* `User` type:
+      - `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
 
-			* `_id`
+      - `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
 
-			* `username`
+    - `User` type:
 
-			* `email`
+      - `_id`
 
-			* `bookCount`
+      - `username`
 
-			* `savedBooks` (This will be an array of the `Book` type.)
+      - `email`
 
-		* `Book` type:
+      - `bookCount`
 
-			* `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
+      - `savedBooks` (This will be an array of the `Book` type.)
 
-			* `authors` (An array of strings, as there may be more than one author.)
+    - `Book` type:
 
-			* `description`
+      - `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
 
-			* `title`
+      - `authors` (An array of strings, as there may be more than one author.)
 
-			* `image`
+      - `description`
 
-			* `link`
+      - `title`
 
-		* `Auth` type:
+      - `image`
 
-			* `token`
+      - `link`
 
-			* `user` (References the `User` type.)
+    - `Auth` type:
 
+      - `token`
+
+      - `user` (References the `User` type.)
 
 ### Front-End Specifications
 
 You'll need to create the following front-end files:
 
-* `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
+- `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
 
-* `mutations.js`:
+- `mutations.js`:
 
-	* `LOGIN_USER` will execute the `loginUser` mutation set up using Apollo Server.
+  - `LOGIN_USER` will execute the `loginUser` mutation set up using Apollo Server.
 
-	* `ADD_USER` will execute the `addUser` mutation.
+  - `ADD_USER` will execute the `addUser` mutation.
 
-	* `SAVE_BOOK` will execute the `saveBook` mutation.
+  - `SAVE_BOOK` will execute the `saveBook` mutation.
 
-	* `REMOVE_BOOK` will execute the `removeBook` mutation.
+  - `REMOVE_BOOK` will execute the `removeBook` mutation.
 
 Additionally, you’ll need to complete the following tasks in each of these front-end files:
 
-* `App.js`: Create an Apollo Provider to make every request work with the Apollo Server.
-	
-* `SearchBooks.js`:
+- `App.js`: Create an Apollo Provider to make every request work with the Apollo Server.
+- `SearchBooks.js`:
 
-	* Use the Apollo `useMutation()` Hook to execute the `SAVE_BOOK` mutation in the `handleSaveBook()` function instead of the `saveBook()` function imported from the `API` file.
+  - Use the Apollo `useMutation()` Hook to execute the `SAVE_BOOK` mutation in the `handleSaveBook()` function instead of the `saveBook()` function imported from the `API` file.
 
-	* Make sure you keep the logic for saving the book's ID to state in the `try...catch` block! 
+  - Make sure you keep the logic for saving the book's ID to state in the `try...catch` block!
 
-* `SavedBooks.js`:
+- `SavedBooks.js`:
 
-	* Remove the `useEffect()` Hook that sets the state for `UserData`.
+  - Remove the `useEffect()` Hook that sets the state for `UserData`.
 
-	* Instead, use the `useQuery()` Hook to execute the `GET_ME` query on load and save it to a variable named `userData`.
+  - Instead, use the `useQuery()` Hook to execute the `GET_ME` query on load and save it to a variable named `userData`.
 
-	* Use the `useMutation()` Hook to execute the `REMOVE_BOOK` mutation in the `handleDeleteBook()` function instead of the `deleteBook()` function that's imported from `API` file. (Make sure you keep the `removeBookId()` function in place!)
+  - Use the `useMutation()` Hook to execute the `REMOVE_BOOK` mutation in the `handleDeleteBook()` function instead of the `deleteBook()` function that's imported from `API` file. (Make sure you keep the `removeBookId()` function in place!)
 
-* `SignupForm.js`: Replace the `addUser()` functionality imported from the `API` file with the `ADD_USER` mutation functionality.
+- `SignupForm.js`: Replace the `addUser()` functionality imported from the `API` file with the `ADD_USER` mutation functionality.
 
-* `LoginForm.js`: Replace the `loginUser()` functionality imported from the `API` file with the `LOGIN_USER` mutation functionality.
-
+- `LoginForm.js`: Replace the `loginUser()` functionality imported from the `API` file with the `LOGIN_USER` mutation functionality.
 
 ## Grading Requirements
 
 > **Note**: If a Challenge assignment submission is marked as “0”, it is considered incomplete and will not count towards your graduation requirements. Examples of incomplete submissions include the following:
 >
-> * A repository that has no code
+> - A repository that has no code
 >
-> * A repository that includes a unique name but nothing else
+> - A repository that includes a unique name but nothing else
 >
-> * A repository that includes only a README file but nothing else
+> - A repository that includes only a README file but nothing else
 >
-> * A repository that only includes starter code
+> - A repository that only includes starter code
 
 This Challenge is graded based on the following criteria:
 
 ### Technical Acceptance Criteria: 40%
 
-* Satisfies all of the preceding acceptance criteria plus the following:
+- Satisfies all of the preceding acceptance criteria plus the following:
 
-	* Has an Apollo Server that uses GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
+  - Has an Apollo Server that uses GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
 
-	* Use an Apollo Server and apply it to the Express.js server as middleware.
+  - Use an Apollo Server and apply it to the Express.js server as middleware.
 
-	* Include schema settings for resolvers and typeDefs as outlined in the Challenge instructions.
+  - Include schema settings for resolvers and typeDefs as outlined in the Challenge instructions.
 
-	* Modify the existing authentication middleware to work in the context of a GraphQL API.
+  - Modify the existing authentication middleware to work in the context of a GraphQL API.
 
-	* Use an Apollo Provider so that the application can communicate with the Apollo Server.
+  - Use an Apollo Provider so that the application can communicate with the Apollo Server.
 
-	* Application must be deployed to Heroku.
-
+  - Application must be deployed to Heroku.
 
 ### Deployment: 32%
 
-* Application deployed at live URL.
+- Application deployed at live URL.
 
-* Application loads with no errors.
+- Application loads with no errors.
 
-* Application GitHub URL submitted.
+- Application GitHub URL submitted.
 
-* GitHub repository contains application code.
-
+- GitHub repository contains application code.
 
 ### Application Quality: 15%
 
-* User experience is intuitive and easy to navigate.
+- User experience is intuitive and easy to navigate.
 
-* User interface style is clean and polished.
+- User interface style is clean and polished.
 
-* Application resembles the mock-up functionality provided in the Challenge instructions.
-
+- Application resembles the mock-up functionality provided in the Challenge instructions.
 
 ### Repository Quality: 13%
 
-* Repository has a unique name.
+- Repository has a unique name.
 
-* Repository follows best practices for file structure and naming conventions.
+- Repository follows best practices for file structure and naming conventions.
 
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
+- Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
 
-* Repository contains multiple descriptive commit messages.
+- Repository contains multiple descriptive commit messages.
 
-* Repository contains high-quality README file with description, screenshot, and link to the deployed application.
-
+- Repository contains high-quality README file with description, screenshot, and link to the deployed application.
 
 ## Review
 
 You are required to submit BOTH of the following for review:
 
-* The URL of the functional, deployed application.
+- The URL of the functional, deployed application.
 
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
+- The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
 
 ---
+
 © 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
