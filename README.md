@@ -24,7 +24,7 @@ Fully functioning Google Books API search engine built with a RESTful API as a G
 - Have a Save your Books page.
 - Search for any books based on genre , tittle , Author.
 
-![Screenshot](/assets/screenshot.png)
+     ![Screenshot](/img/books.png)
 
 
 ## Getting Started
