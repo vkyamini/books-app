@@ -2,7 +2,7 @@
 
 Everbody loves Books, This full stack web Application allowing teh user to search for any book.
 
-[Link](https://graphql-yamini-books.herokuapp.com/)
+[Website Link](https://graphql-yamini-books.herokuapp.com/)
 
 ## Table of Contents
 - [Introduction](#introduction)
